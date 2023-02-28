@@ -1,0 +1,55 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-title> Climabr </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" offset-md="3">
+        <ion-searchbar 
+          placeholder="Qual a sua cidade?"
+          #searchInput
+          (ionChange)="onSearch(searchInput.value)"
+          (ionFocus)="onSearchFocus()"
+          (ionBlur)="onSearchBlur()"
+          debounce="500"
+        ></ion-searchbar>
+
+        <app-error-message *ngIf="errorMessage" [message]="errorMessage"></app-error-message>
+
+        <ion-list lines="none" *ngIf="!errorMessage">
+          <ion-item detail button *ngFor="let city of cities" (click)="onSelect(city)">
+            <ion-label>
+              <h2>{{ city.name }}</h2>
+              <ion-text color="primary">
+                <small>{{ city.state }}</small>
+              </ion-text>
+            </ion-label>
+          </ion-item>
+
+        </ion-list>
+
+        <!-- Adicionando a seção de "Últimas Consultas" -->
+        <ion-list *ngIf="showRecentSearches && recentSearches.length">
+          <ion-list-header>
+            Últimas Consultas
+          </ion-list-header>
+          <ion-item-group *ngFor="let search of recentSearches">
+            <ion-item detail button *ngFor="let city of search.cities" (click)="onSelect(city)">
+              <ion-label>
+                <h2>{{ city.name }}</h2>      
+                <ion-text color="primary">
+                  <small>{{ city.state }}</small>
+                </ion-text>
+              </ion-label>
+            </ion-item>
+          </ion-item-group>
+        </ion-list>
+        
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
